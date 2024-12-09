@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+            font-size: 1.2em;
+            color: #4CAF50;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 220px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+    <script>
+        document.getElementById('date').value = new Date().toLocaleDateString('en-US', { 
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+        function recordExpense() {
+            var date = document.getElementById('date').value;
+            var spending = document.getElementById('spending').value;
+            var amount = document.getElementById('amount').value;
+            document.getElementById('confirmation').innerText = `Recorded: ${spending} - ₹${amount} on ${date}`;
+        }
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch(error => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Expense Tracker</h1>
+    <form id="expenseForm">
+        <label for="date">Confirm today's date:</label>
+        <input type="text" id="date" name="date" readonly>
+        
+        <label for="spending">What are you spending on?</label>
+        <input type="text" id="spending" name="spending" required>
+        
+        <label for="amount">How much is it?</label>
+        <input type="text" id="amount" name="amount" required>
+        
+        <button type="button" onclick="recordExpense()">Record</button>
+    </form>
+    <p id="confirmation"></p>
+</body>
+</html>
